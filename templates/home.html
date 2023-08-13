@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+    <style>
+        input[type="text"] {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            width: 200px;
+        }
+
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .form-container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        li span {
+            font-family: 'Courier New', Courier, monospace;
+            display: inline-block;
+            width: 300px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Search for the reading values and dates</h1>
+    <form method="GET" action="{% url 'search' %}">
+        <input type="text" name="an_mpan" placeholder="Input MPAN">
+        <input type="text" name="meter_serial_number" placeholder="Input meter serial number">
+        <button type="submit">search</button>
+    </form>
+
+    <ul>
+        {% if results %}
+        {% for result in results %}
+        <li>
+            <label>Register Reading:</label>
+            <span>{{ result.register_reading }}</span>
+        </li>
+        <li>
+            <label>Reading Date & Time:</label>
+            <span>{{ result.reading_date_time|date:'Y-m-d H:i:s' }}</span>
+        </li>
+        <li>
+            <label>FileName of the flow file:</label>
+            <span>{{ result.files_name }}</span>
+        </li>
+        <br>
+        {% endfor %}
+        {% elif results == "" %}
+
+        {% else %}
+        <li>
+            Not found required data.
+        </li>
+        <br>
+        {% endif %}
+    </ul>
+</body>
+
+</html>
